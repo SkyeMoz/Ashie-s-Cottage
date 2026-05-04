@@ -1,24 +1,68 @@
 {
   "appName": "Ashie's Cottage",
   "appSubtitle": "A little corner of joy and adventures",
+  "themeColor": "#934134",
 
-  "navbar": [
-    { "id": "home", "name": "Home", "page": "home" },
-    { "id": "stories", "name": "Stories", "page": "stories" }
-  ],
-
-  "pages": {
-    "home": {
-      "title": "Welcome",
-      "subtitle": "Relax and explore"
-    },
-    "stories": {
-      "title": "Stories",
-      "subtitle": "Daily memories"
-    }
+  "theme": {
+    "primary": "#934134",
+    "secondary": "#6f2f25",
+    "background": "#241713",
+    "text": "#fffaf4",
+    "glass": "rgba(147,65,52,0.14)"
   },
 
   "settings": {
     "defaultPage": "home"
+  },
+
+  "navbar": [
+    { "id": "home", "name": "Home", "icon": "home", "page": "home" },
+    { "id": "recipe", "name": "Recipe", "icon": "recipe", "page": "recipe" },
+    { "id": "journeys", "name": "Journeys", "icon": "journeys", "page": "journeys" },
+    { "id": "stories", "name": "Stories", "icon": "stories", "page": "stories" }
+  ],
+
+  "buttons": [
+    {
+      "text": "RECIPE",
+      "page": "recipe",
+      "thumbnail": "bowl"
+    },
+    {
+      "text": "JOURNEYS",
+      "page": "journeys",
+      "thumbnail": "backpack"
+    },
+    {
+      "text": "STORIES",
+      "page": "stories",
+      "thumbnail": "book"
+    }
+  ],
+
+  "pages": {
+    "home": {
+      "title": "Ashie’s Cottage",
+      "description": "Soft light, warm hearts, and storybook calm.",
+      "footer": "Soft light • warm hearts • storybook calm"
+    },
+
+    "recipe": {
+      "title": "Recipe",
+      "subtitle": "Warm kitchen notes and sweet meals.",
+      "content": "Add your recipes here. Example: ingredients, steps, tips."
+    },
+
+    "journeys": {
+      "title": "Journeys",
+      "subtitle": "Trips, walks, and small moments.",
+      "content": "Write your travel memories here."
+    },
+
+    "stories": {
+      "title": "Stories",
+      "subtitle": "Letters, thoughts, reflections.",
+      "content": "Write your journal or stories here."
+    }
   }
 }
