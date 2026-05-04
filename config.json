@@ -2,67 +2,185 @@
   "appName": "Ashie's Cottage",
   "appSubtitle": "A little corner of joy and adventures",
   "themeColor": "#934134",
-
+  "assets": {
+    "background": "settings/media/Ash.png",
+    "fonts": {
+      "title": "settings/fonts/title.ttf",
+      "subtitle": "settings/fonts/subtitle.ttf",
+      "description": "settings/fonts/description.ttf"
+    }
+  },
   "theme": {
     "primary": "#934134",
     "secondary": "#6f2f25",
     "background": "#241713",
     "text": "#fffaf4",
-    "glass": "rgba(147,65,52,0.14)"
+    "glass": "rgba(255,255,255,0.10)"
   },
-
   "settings": {
-    "defaultPage": "home"
+    "defaultPage": "home",
+    "blurEffects": true,
+    "mobileMode": true
   },
-
   "navbar": [
-    { "id": "home", "name": "Home", "icon": "home", "page": "home" },
-    { "id": "recipe", "name": "Recipe", "icon": "recipe", "page": "recipe" },
-    { "id": "journeys", "name": "Journeys", "icon": "journeys", "page": "journeys" },
-    { "id": "stories", "name": "Stories", "icon": "stories", "page": "stories" }
-  ],
-
-  "buttons": [
     {
-      "text": "RECIPE",
-      "page": "recipe",
-      "thumbnail": "bowl"
+      "id": "home",
+      "name": "Home",
+      "icon": "home",
+      "page": "home"
     },
     {
-      "text": "JOURNEYS",
-      "page": "journeys",
-      "thumbnail": "backpack"
+      "id": "library",
+      "name": "Library",
+      "icon": "book",
+      "page": "library"
     },
     {
-      "text": "STORIES",
-      "page": "stories",
-      "thumbnail": "book"
+      "id": "recipes",
+      "name": "Recipes",
+      "icon": "recipe",
+      "page": "recipes"
+    },
+    {
+      "id": "stories",
+      "name": "Stories",
+      "icon": "stories",
+      "page": "stories"
     }
   ],
-
+  "homeCards": [
+    {
+      "id": "recipes",
+      "title": "Recipes",
+      "subtitle": "Warm kitchen notes",
+      "description": "Sweet meals, tea time treats, and cozy bites.",
+      "icon": "bowl",
+      "thumbnail": "settings/media/recipes.png",
+      "action": {
+        "type": "openPage",
+        "target": "recipes"
+      },
+      "children": [
+        {
+          "id": "story-1",
+          "title": "Story 1",
+          "subtitle": "Chapter one",
+          "description": "A tiny nested page.",
+          "icon": "book",
+          "action": {
+            "type": "openPage",
+            "target": "story-1"
+          }
+        },
+        {
+          "id": "copy-link",
+          "title": "Copy Link",
+          "subtitle": "Clipboard action",
+          "description": "Copies a custom link or text.",
+          "icon": "link",
+          "action": {
+            "type": "copyClipboard",
+            "text": "https://example.com/story-1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "journeys",
+      "title": "Journeys",
+      "subtitle": "Tiny escapes",
+      "description": "Trips, daydreams, and little adventures.",
+      "icon": "backpack",
+      "thumbnail": "settings/media/journeys.png",
+      "action": {
+        "type": "openWebsite",
+        "url": "https://example.com"
+      }
+    },
+    {
+      "id": "stories",
+      "title": "Stories",
+      "subtitle": "Letters and memories",
+      "description": "A soft journal of memories and reflections.",
+      "icon": "stories",
+      "thumbnail": "settings/media/stories.png",
+      "action": {
+        "type": "openPage",
+        "target": "stories"
+      },
+      "children": [
+        {
+          "id": "open-home",
+          "title": "Open Homepage",
+          "subtitle": "Go back home",
+          "description": "Sends the user to the homepage.",
+          "icon": "home",
+          "action": {
+            "type": "goHome"
+          }
+        },
+        {
+          "id": "open-web",
+          "title": "Open Website",
+          "subtitle": "External link",
+          "description": "Opens a website in a new tab.",
+          "icon": "open",
+          "action": {
+            "type": "openWebsite",
+            "url": "https://example.com"
+          }
+        }
+      ]
+    }
+  ],
   "pages": {
     "home": {
-      "title": "Ashie’s Cottage",
-      "description": "Soft light, warm hearts, and storybook calm.",
-      "footer": "Soft light • warm hearts • storybook calm"
+      "title": "Ashie's Cottage",
+      "subtitle": "A little corner of joy and adventures",
+      "content": "Soft light, warm hearts, and storybook calm.",
+      "footer": "Soft light • warm hearts • storybook calm",
+      "actions": []
     },
-
-    "recipe": {
-      "title": "Recipe",
+    "recipes": {
+      "title": "Recipes",
       "subtitle": "Warm kitchen notes and sweet meals.",
-      "content": "Add your recipes here. Example: ingredients, steps, tips."
+      "content": "This page can hold your recipes, ingredients, steps, and seasonal favorites.",
+      "actions": [
+        {
+          "label": "Copy recipe text",
+          "icon": "copy",
+          "action": {
+            "type": "copyClipboard",
+            "text": "Recipe copied from Ashie's Cottage."
+          }
+        }
+      ]
     },
-
-    "journeys": {
-      "title": "Journeys",
-      "subtitle": "Trips, walks, and small moments.",
-      "content": "Write your travel memories here."
+    "story-1": {
+      "title": "Story 1",
+      "subtitle": "Chapter one",
+      "content": "Nested page content goes here.",
+      "actions": [
+        {
+          "label": "Open homepage",
+          "icon": "home",
+          "action": {
+            "type": "goHome"
+          }
+        }
+      ]
     },
-
     "stories": {
       "title": "Stories",
-      "subtitle": "Letters, thoughts, reflections.",
-      "content": "Write your journal or stories here."
+      "subtitle": "Letters, memories, and handwritten feelings.",
+      "content": "A soft journal for memories, reflections, and chapters.",
+      "actions": []
+    },
+    "library": {
+      "title": "Library",
+      "subtitle": "Saved pages and nested cards.",
+      "content": "A collection of all your cards and subcards.",
+      "actions": []
     }
   }
 }
