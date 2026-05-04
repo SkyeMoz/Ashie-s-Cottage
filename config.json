@@ -14,39 +14,18 @@
     "primary": "#934134",
     "secondary": "#6f2f25",
     "background": "#241713",
-    "text": "#fffaf4",
-    "glass": "rgba(255,255,255,0.10)"
+    "text": "#fffaf4"
   },
   "settings": {
     "defaultPage": "home",
-    "blurEffects": true,
-    "mobileMode": true
+    "showSearch": true,
+    "showStats": true
   },
   "navbar": [
-    {
-      "id": "home",
-      "name": "Home",
-      "icon": "home",
-      "page": "home"
-    },
-    {
-      "id": "library",
-      "name": "Library",
-      "icon": "book",
-      "page": "library"
-    },
-    {
-      "id": "recipes",
-      "name": "Recipes",
-      "icon": "recipe",
-      "page": "recipes"
-    },
-    {
-      "id": "stories",
-      "name": "Stories",
-      "icon": "stories",
-      "page": "stories"
-    }
+    { "id": "home", "name": "Home", "icon": "home", "page": "home" },
+    { "id": "library", "name": "Library", "icon": "book", "page": "library" },
+    { "id": "recipes", "name": "Recipes", "icon": "recipe", "page": "recipes" },
+    { "id": "stories", "name": "Stories", "icon": "stories", "page": "stories" }
   ],
   "homeCards": [
     {
@@ -56,10 +35,7 @@
       "description": "Sweet meals, tea time treats, and cozy bites.",
       "icon": "bowl",
       "thumbnail": "settings/media/recipes.png",
-      "action": {
-        "type": "openPage",
-        "target": "recipes"
-      },
+      "action": { "type": "openPage", "target": "recipes" },
       "children": [
         {
           "id": "story-1",
@@ -67,10 +43,7 @@
           "subtitle": "Chapter one",
           "description": "A tiny nested page.",
           "icon": "book",
-          "action": {
-            "type": "openPage",
-            "target": "story-1"
-          }
+          "action": { "type": "openPage", "target": "story-1" }
         },
         {
           "id": "copy-link",
@@ -78,10 +51,7 @@
           "subtitle": "Clipboard action",
           "description": "Copies a custom link or text.",
           "icon": "link",
-          "action": {
-            "type": "copyClipboard",
-            "text": "https://example.com/story-1"
-          }
+          "action": { "type": "copyClipboard", "text": "https://example.com/story-1" }
         }
       ]
     },
@@ -92,10 +62,7 @@
       "description": "Trips, daydreams, and little adventures.",
       "icon": "backpack",
       "thumbnail": "settings/media/journeys.png",
-      "action": {
-        "type": "openWebsite",
-        "url": "https://example.com"
-      }
+      "action": { "type": "openWebsite", "url": "https://example.com" }
     },
     {
       "id": "stories",
@@ -104,10 +71,7 @@
       "description": "A soft journal of memories and reflections.",
       "icon": "stories",
       "thumbnail": "settings/media/stories.png",
-      "action": {
-        "type": "openPage",
-        "target": "stories"
-      },
+      "action": { "type": "openPage", "target": "stories" },
       "children": [
         {
           "id": "open-home",
@@ -115,9 +79,7 @@
           "subtitle": "Go back home",
           "description": "Sends the user to the homepage.",
           "icon": "home",
-          "action": {
-            "type": "goHome"
-          }
+          "action": { "type": "goHome" }
         },
         {
           "id": "open-web",
@@ -125,10 +87,7 @@
           "subtitle": "External link",
           "description": "Opens a website in a new tab.",
           "icon": "open",
-          "action": {
-            "type": "openWebsite",
-            "url": "https://example.com"
-          }
+          "action": { "type": "openWebsite", "url": "https://example.com" }
         }
       ]
     }
@@ -149,10 +108,7 @@
         {
           "label": "Copy recipe text",
           "icon": "copy",
-          "action": {
-            "type": "copyClipboard",
-            "text": "Recipe copied from Ashie's Cottage."
-          }
+          "action": { "type": "copyClipboard", "text": "Recipe copied from Ashie's Cottage." }
         }
       ]
     },
@@ -164,9 +120,7 @@
         {
           "label": "Open homepage",
           "icon": "home",
-          "action": {
-            "type": "goHome"
-          }
+          "action": { "type": "goHome" }
         }
       ]
     },
