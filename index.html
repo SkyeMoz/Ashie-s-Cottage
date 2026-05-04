@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#934134" />
+  <title>Ashie’s Cottage</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --accent:#934134;
+      --accent-deep:#6f2f25;
+      --text:#fffaf4;
+      --muted:rgba(255,248,240,.78);
+      --glass:rgba(147,65,52,.20);
+      --glass-strong:rgba(147,65,52,.32);
+      --border:rgba(255,255,255,.22);
+      --shadow:0 16px 50px rgba(0,0,0,.24);
+      --bg:#241713;
+      --frame-pad:16px;
+      --radius:26px;
+      --nav-h:58px;
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+
+    html,body{
+      width:100%;
+      min-height:100%;
+      overflow-x:hidden;
+      overflow-y:auto;
+      scroll-behavior:smooth;
+      font-family:'Inter',sans-serif;
+      color:var(--text);
+      background:var(--bg);
+    }
+
+    ::-webkit-scrollbar{ width:10px; }
+    ::-webkit-scrollbar-track{ background:#1b120f; }
+    ::-webkit-scrollbar-thumb{
+      background:rgba(147,65,52,.65);
+      border-radius:999px;
+      border:2px solid #1b120f;
+    }
+    ::-webkit-scrollbar-thumb:hover{ background:rgba(147,65,52,.9); }
+
+    body{
+      position:relative;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding:14px 0;
+      isolation:isolate;
+    }
+
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:-3;
+      background:
+        linear-gradient(180deg, rgba(28,18,14,.48), rgba(28,18,14,.42)),
+        radial-gradient(circle at 50% 25%, rgba(255,232,198,.18), transparent 35%),
+        radial-gradient(circle at 78% 16%, rgba(255,255,255,.10), transparent 20%),
+        url("https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
+      filter:saturate(.82) contrast(.96) brightness(.82);
+      transform:scale(1.03);
+    }
+
+    .bg::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, rgba(30,20,14,.45), transparent 15%, transparent 85%, rgba(30,20,14,.45)),
+        radial-gradient(circle at 50% 100%, rgba(62,32,22,.35), transparent 28%);
+      pointer-events:none;
+    }
+
+    .vignette{
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      background:
+        radial-gradient(circle at center, transparent 34%, rgba(0,0,0,.16) 72%, rgba(0,0,0,.34) 100%),
+        linear-gradient(180deg, rgba(255,233,209,.06), rgba(147,65,52,.05));
+      pointer-events:none;
+    }
+
+    .particles{
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      overflow:hidden;
+      pointer-events:none;
+    }
+
+    .particle{
+      position:absolute;
+      width:2px;
+      height:2px;
+      border-radius:50%;
+      background:rgba(255,248,236,.72);
+      box-shadow:0 0 8px rgba(255,248,236,.24);
+      animation: floatUp linear infinite;
+      opacity:.55;
+    }
+
+    @keyframes floatUp{
+      0%{ transform:translate3d(0, 16px, 0) scale(.9); opacity:0; }
+      10%{ opacity:.5; }
+      50%{ opacity:.8; }
+      100%{ transform:translate3d(0, -145vh, 0) scale(1.1); opacity:0; }
+    }
+
+    @keyframes fadeUp{
+      from{ opacity:0; transform:translateY(16px); }
+      to{ opacity:1; transform:translateY(0); }
+    }
+
+    @keyframes fadeIn{
+      from{ opacity:0; }
+      to{ opacity:1; }
+    }
+
+    @keyframes popIn{
+      from{ opacity:0; transform:translateY(8px) scale(.985); }
+      to{ opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    .shell{
+      width:min(900px, calc(100vw - 24px));
+      padding:8px;
+      animation:fadeIn .8s ease;
+    }
+
+    .frame{
+      position:relative;
+      border-radius:var(--radius);
+      padding:var(--frame-pad);
+      min-height:calc(100vh - 28px);
+      background:
+        linear-gradient(180deg, rgba(147,65,52,.18), rgba(147,65,52,.10));
+      border:1px solid rgba(255,255,255,.20);
+      box-shadow:
+        0 22px 70px rgba(0,0,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.18),
+        inset 0 -1px 0 rgba(255,255,255,.04);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      overflow:hidden;
+      animation:fadeUp .8s ease;
+    }
+
+    .frame::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.16), transparent 20%, transparent 74%, rgba(255,255,255,.06)),
+        radial-gradient(circle at 18% 12%, rgba(255,255,255,.10), transparent 20%);
+      pointer-events:none;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      position:relative;
+      z-index:2;
+      animation:fadeUp .8s ease .05s both;
+    }
+
+    .icon-btn{
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.20);
+      background:
+        linear-gradient(180deg, rgba(147,65,52,.42), rgba(147,65,52,.22));
+      box-shadow:
+        0 10px 22px rgba(0,0,0,.14),
+        inset 0 1px 0 rgba(255,255,255,.14);
+      display:grid;
+      place-items:center;
+      color:#fff;
+      cursor:pointer;
+      transition:transform .25s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease, opacity .2s ease;
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+    }
+
+    .icon-btn:hover{
+      transform:translateY(-2px) scale(1.03);
+      box-shadow:
+        0 14px 28px rgba(0,0,0,.2),
+        0 0 0 1px rgba(255,255,255,.10),
+        0 0 24px rgba(147,65,52,.22);
+      background:linear-gradient(180deg, rgba(147,65,52,.54), rgba(147,65,52,.30));
+      border-color:rgba(255,255,255,.26);
+    }
+
+    .icon-btn svg,
+    .card-icon svg,
+    .nav-icon svg{
+      width:20px;
+      height:20px;
+      stroke:currentColor;
+      fill:none;
+      stroke-width:1.9;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .nav{
+      position:absolute;
+      right:22px;
+      top:66px;
+      z-index:20;
+      display:none;
+      flex-direction:column;
+      gap:10px;
+      min-width:180px;
+      padding:12px;
+      border-radius:22px;
+      background:linear-gradient(180deg, rgba(147,65,52,.24), rgba(147,65,52,.12));
+      border:1px solid rgba(255,255,255,.18);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      box-shadow:0 16px 40px rgba(0,0,0,.22);
+      transform-origin:top right;
+      animation:popIn .18s ease;
+    }
+
+    .nav.open{ display:flex; }
+
+    .nav-btn{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      width:100%;
+      padding:11px 12px;
+      border-radius:14px;
+      border:1px solid transparent;
+      background:transparent;
+      color:var(--text);
+      cursor:pointer;
+      text-align:left;
+      transition:background .2s ease, transform .2s ease, border-color .2s ease;
+      font:inherit;
+    }
+
+    .nav-btn:hover{
+      background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.10);
+      transform:translateX(2px);
+    }
+
+    .nav-btn.active{
+      background:rgba(255,255,255,.10);
+      border-color:rgba(255,255,255,.18);
+    }
+
+    .nav-icon{
+      width:28px;
+      height:28px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,.08);
+      flex:0 0 auto;
+    }
+
+    .nav-label{
+      font-size:.95rem;
+      letter-spacing:.04em;
+      font-weight:500;
+    }
+
+    .content{
+      position:relative;
+      z-index:2;
+      min-height:calc(100vh - 28px - (var(--frame-pad) * 2));
+      display:flex;
+      flex-direction:column;
+    }
+
+    .page{
+      flex:1;
+      display:none;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:14px 8px 8px;
+      animation:fadeUp .85s ease;
+    }
+
+    .page.active{ display:flex; }
+
+    .eyebrow{
+      font-size:.72rem;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+      color:rgba(255,248,240,.70);
+      margin-bottom:10px;
+      text-shadow:0 2px 10px rgba(0,0,0,.18);
+    }
+
+    h1{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(2.5rem, 7vw, 4.5rem);
+      line-height:.95;
+      font-weight:700;
+      letter-spacing:.01em;
+      text-shadow:0 4px 20px rgba(0,0,0,.20);
+      margin-bottom:10px;
+    }
+
+    .subtitle{
+      font-size:clamp(.95rem, 2vw, 1.05rem);
+      line-height:1.65;
+      max-width:520px;
+      color:var(--muted);
+      text-shadow:0 2px 10px rgba(0,0,0,.16);
+    }
+
+    .divider{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:16px 0 22px;
+      color:rgba(255,248,240,.88);
+      user-select:none;
+      animation:fadeUp .85s ease .18s both;
+    }
+
+    .divider .line{
+      width:44px;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.52), transparent);
+    }
+
+    .divider .symbol{
+      display:flex;
+      align-items:center;
+      gap:7px;
+      font-size:1rem;
+      filter:drop-shadow(0 2px 8px rgba(0,0,0,.12));
+    }
+
+    .cards{
+      width:min(680px, 100%);
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:12px;
+      margin-top:6px;
+    }
+
+    .card{
+      position:relative;
+      border-radius:20px;
+      min-height:138px;
+      padding:14px 14px 12px;
+      text-decoration:none;
+      color:#fff;
+      background:
+        linear-gradient(180deg, rgba(147,65,52,.30), rgba(147,65,52,.18)),
+        radial-gradient(circle at 18% 16%, rgba(255,255,255,.16), transparent 32%);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:
+        0 12px 34px rgba(0,0,0,.16),
+        inset 0 1px 0 rgba(255,255,255,.14),
+        inset 0 -16px 24px rgba(70,24,18,.08);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      display:flex;
+      align-items:flex-end;
+      justify-content:flex-start;
+      overflow:hidden;
+      transition:transform .28s ease, box-shadow .28s ease, border-color .28s ease, filter .28s ease;
+      animation:fadeUp .75s ease both;
+    }
+
+    .card:nth-child(1){ animation-delay:.22s; }
+    .card:nth-child(2){ animation-delay:.32s; }
+    .card:nth-child(3){ animation-delay:.42s; }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.14), transparent 22%),
+        radial-gradient(circle at 82% 14%, rgba(255,255,255,.09), transparent 18%);
+      pointer-events:none;
+    }
+
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:auto 10px 10px auto;
+      width:48px;
+      height:48px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(255,255,255,.13), transparent 68%);
+      opacity:.8;
+      filter:blur(1px);
+      pointer-events:none;
+    }
+
+    .card:hover{
+      transform:translateY(-6px);
+      box-shadow:
+        0 16px 42px rgba(0,0,0,.22),
+        0 0 0 1px rgba(255,255,255,.08),
+        0 0 18px rgba(147,65,52,.24),
+        inset 0 1px 0 rgba(255,255,255,.16);
+      border-color:rgba(255,255,255,.26);
+      filter:saturate(1.02);
+    }
+
+    .card-inner{
+      position:relative;
+      z-index:1;
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:10px;
+    }
+
+    .card-icon{
+      width:46px;
+      height:46px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.10),
+        0 8px 16px rgba(0,0,0,.08);
+    }
+
+    .card-title{
+      font-size:.96rem;
+      font-weight:600;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      text-shadow:0 2px 8px rgba(0,0,0,.16);
+    }
+
+    .card-sub{
+      font-size:.82rem;
+      color:rgba(255,248,240,.74);
+      line-height:1.45;
+      max-width:18ch;
+    }
+
+    .page-panel{
+      width:min(760px, 100%);
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:14px;
+      align-items:stretch;
+    }
+
+    .panel{
+      border-radius:24px;
+      padding:18px;
+      background:linear-gradient(180deg, rgba(147,65,52,.24), rgba(147,65,52,.12));
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:0 14px 36px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.12);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      text-align:left;
+    }
+
+    .panel h2{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(1.8rem, 4vw, 2.7rem);
+      line-height:1;
+      margin-bottom:8px;
+    }
+
+    .panel p{
+      color:rgba(255,248,240,.78);
+      line-height:1.65;
+      font-size:.96rem;
+    }
+
+    .panel-visual{
+      border-radius:24px;
+      padding:18px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)),
+        radial-gradient(circle at 30% 22%, rgba(255,255,255,.12), transparent 28%),
+        linear-gradient(145deg, rgba(147,65,52,.32), rgba(70,24,18,.10));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 14px 36px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.12);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:220px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .panel-visual::before{
+      content:"";
+      position:absolute;
+      inset:14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.16);
+      opacity:.45;
+    }
+
+    .panel-visual::after{
+      content:"";
+      position:absolute;
+      inset:auto 20px 20px auto;
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(255,255,255,.12), transparent 70%);
+      filter:blur(6px);
+    }
+
+    .mini-title{
+      position:relative;
+      z-index:1;
+      text-align:center;
+      max-width:18ch;
+      font-family:'Playfair Display',serif;
+      font-size:1.9rem;
+      line-height:1.05;
+    }
+
+    .bottom-note{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:14px;
+      z-index:2;
+      font-size:.76rem;
+      color:rgba(255,248,240,.66);
+      letter-spacing:.06em;
+      text-align:center;
+      text-shadow:0 2px 8px rgba(0,0,0,.12);
+      animation:fadeUp .8s ease .5s both;
+    }
+
+    .subtle-line{
+      width:100%;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.20), transparent);
+      margin:10px 0 14px;
+    }
+
+    .back-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      margin-top:18px;
+      padding:12px 16px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      cursor:pointer;
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      text-decoration:none;
+      transition:transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+
+    .back-btn:hover{
+      transform:translateY(-2px);
+      background:rgba(255,255,255,.09);
+      border-color:rgba(255,255,255,.22);
+    }
+
+    .home-grid{
+      width:min(760px, 100%);
+      margin-top:12px;
+    }
+
+    .page-hidden{ display:none !important; }
+
+    @media (max-width: 860px){
+      body{ padding:8px 0; }
+      .shell{
+        width:min(100vw - 16px, 900px);
+        padding:4px;
+      }
+      .frame{
+        min-height:calc(100vh - 16px);
+        padding:14px;
+        border-radius:22px;
+      }
+      .content{
+        min-height:calc(100vh - 16px - 28px);
+      }
+      .hero{
+        padding:12px 6px 0;
+      }
+      .cards{
+        grid-template-columns:1fr;
+        width:min(440px, 100%);
+        gap:10px;
+        margin-top:4px;
+      }
+      .card{ min-height:116px; }
+      .card-sub{ max-width:none; }
+      h1{ font-size:clamp(2.2rem, 10vw, 4rem); }
+      .divider{ margin:14px 0 18px; }
+      .divider .line{ width:34px; }
+      .bottom-note{
+        position:static;
+        transform:none;
+        margin-top:14px;
+      }
+      .page-panel{
+        grid-template-columns:1fr;
+      }
+      .panel-visual{
+        min-height:140px;
+      }
+    }
+
+    @media (max-width: 420px){
+      .frame{ padding:12px; }
+      .icon-btn{
+        width:40px;
+        height:40px;
+      }
+      .card{
+        min-height:110px;
+        padding:13px 12px 11px;
+      }
+      .card-icon{
+        width:42px;
+        height:42px;
+        border-radius:14px;
+      }
+      .card-title{ font-size:.92rem; }
+      .card-sub{ font-size:.8rem; }
+      .nav{
+        right:14px;
+        left:14px;
+        min-width:auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{
+        animation:none !important;
+        transition:none !important;
+        scroll-behavior:auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="vignette"></div>
+
+  <div class="particles" aria-hidden="true">
+    <span class="particle" style="left:8%; top:90%; animation-duration:18s; animation-delay:0s;"></span>
+    <span class="particle" style="left:16%; top:82%; animation-duration:17s; animation-delay:2s;"></span>
+    <span class="particle" style="left:24%; top:94%; animation-duration:21s; animation-delay:4s;"></span>
+    <span class="particle" style="left:31%; top:86%; animation-duration:16s; animation-delay:1s;"></span>
+    <span class="particle" style="left:39%; top:96%; animation-duration:20s; animation-delay:6s;"></span>
+    <span class="particle" style="left:47%; top:84%; animation-duration:18s; animation-delay:3s;"></span>
+    <span class="particle" style="left:55%; top:93%; animation-duration:22s; animation-delay:5s;"></span>
+    <span class="particle" style="left:63%; top:87%; animation-duration:19s; animation-delay:2s;"></span>
+    <span class="particle" style="left:71%; top:95%; animation-duration:17s; animation-delay:7s;"></span>
+    <span class="particle" style="left:79%; top:83%; animation-duration:20s; animation-delay:4s;"></span>
+    <span class="particle" style="left:87%; top:92%; animation-duration:23s; animation-delay:1s;"></span>
+    <span class="particle" style="left:94%; top:80%; animation-duration:18s; animation-delay:6s;"></span>
+  </div>
+
+  <main class="shell">
+    <section class="frame">
+      <div class="topbar">
+        <button class="icon-btn" id="homeBtn" aria-label="Home">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 10.5L12 3l9 7.5"></path>
+            <path d="M5.5 9.8V20h13V9.8"></path>
+            <path d="M9.5 20v-6a2.5 2.5 0 0 1 5 0v6"></path>
+          </svg>
+        </button>
+
+        <button class="icon-btn" id="menuBtn" aria-label="Menu">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16"></path>
+            <path d="M4 12h16"></path>
+            <path d="M4 17h16"></path>
+          </svg>
+        </button>
+
+        <nav class="nav" id="navMenu" aria-label="Navigation"></nav>
+      </div>
+
+      <div class="content">
+        <section class="page active" id="page-home" data-page="home">
+          <div class="eyebrow" id="homeEyebrow">Cozy Lifestyle Journal</div>
+          <h1 id="homeTitle">Ashie’s Cottage</h1>
+          <p class="subtitle" id="homeSubtitle">A little corner of joy and adventures</p>
+
+          <div class="divider" aria-hidden="true">
+            <span class="line"></span>
+            <span class="symbol">❧ <span>♥</span> ❧</span>
+            <span class="line"></span>
+          </div>
+
+          <div class="cards" id="homeCards"></div>
+        </section>
+
+        <section class="page" id="page-generic" data-page="generic">
+          <div class="page-panel">
+            <div class="panel">
+              <div class="eyebrow" id="pageEyebrow">Page</div>
+              <h2 id="pageTitle">Title</h2>
+              <div class="subtle-line"></div>
+              <p id="pageSubtitle">Subtitle</p>
+              <p id="pageContent" style="margin-top:12px;">Content</p>
+              <a href="#home" class="back-btn" id="backBtn" aria-label="Back to home">
+                <span>←</span> Back to home
+              </a>
+            </div>
+            <div class="panel-visual" id="panelVisual" aria-hidden="true">
+              <div class="mini-title" id="panelVisualText">Ashie’s Cottage</div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="bottom-note" id="bottomNote">Soft light • warm hearts • storybook calm</div>
+    </section>
+  </main>
+
+  <script>
+    const DEFAULT_CONFIG = {
+      "appName": "Ashie's Cottage",
+      "appSubtitle": "A little corner of joy and adventures",
+      "version": "1.0.0",
+      "themeColor": "#934134",
+      "accentColor": "#934134",
+      "background": "window",
+      "settings": {
+        "defaultPage": "home",
+        "animations": true,
+        "blurEffects": true,
+        "mobileMode": true
+      },
+      "theme": {
+        "primary": "#934134",
+        "secondary": "#6f2f25",
+        "background": "#241713",
+        "text": "#fffaf4",
+        "glass": "rgba(147,65,52,.20)"
+      },
+      "navbar": [
+        { "id": "home", "name": "Home", "icon": "home", "page": "home" },
+        { "id": "recipe", "name": "Recipe", "icon": "recipe", "page": "recipe" },
+        { "id": "journeys", "name": "Journeys", "icon": "journeys", "page": "journeys" },
+        { "id": "stories", "name": "Stories", "icon": "stories", "page": "stories" }
+      ],
+      "pages": {
+        "home": {
+          "title": "Ashie’s Cottage",
+          "subtitle": "A little corner of joy and adventures",
+          "description": "Soft light, warm hearts, and storybook calm."
+        },
+        "recipe": {
+          "title": "Recipe",
+          "subtitle": "Warm kitchen notes and sweet little meals.",
+          "content": "A cozy space for favorite recipes, seasonal bakes, tea-time treats, and tiny kitchen experiments."
+        },
+        "journeys": {
+          "title": "Journeys",
+          "subtitle": "Soft wanderings, tiny escapes, and daydreams.",
+          "content": "A place to keep travel notes, day trips, and the little moments that make a journey feel special."
+        },
+        "stories": {
+          "title": "Stories",
+          "subtitle": "Little letters, memories, and handwritten feelings.",
+          "content": "A soft journal of memories, reflections, and the chapters that live in the quiet corners."
+        }
+      },
+      "buttons": [
+        { "text": "RECIPE", "page": "recipe", "url": "#recipe", "style": "card", "thumbnail": "bowl" },
+        { "text": "JOURNEYS", "page": "journeys", "url": "#journeys", "style": "card", "thumbnail": "backpack" },
+        { "text": "STORIES", "page": "stories", "url": "#stories", "style": "card", "thumbnail": "book" }
+      ]
+    };
+
+    const ICONS = {
+      home: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"></path><path d="M5.5 9.8V20h13V9.8"></path><path d="M9.5 20v-6a2.5 2.5 0 0 1 5 0v6"></path></svg>`,
+      menu: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>`,
+      recipe: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9h12"></path><path d="M8 9c0-2 1.7-4 4-4s4 2 4 4"></path><path d="M9 13h6"></path><path d="M10 13l-2 7"></path><path d="M14 13l2 7"></path><path d="M16.5 9.5l3-3"></path><path d="M15.8 10.2l3.8 3.8"></path><path d="M17.2 8.8l1.8-1.8"></path></svg>`,
+      journeys: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7.5V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1.5"></path><path d="M6.5 7.5h11a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2V9.5a2 2 0 0 1 2-2Z"></path><path d="M9 12h6"></path><path d="M12 9v6"></path><path d="M7 18l1-5h8l1 5"></path></svg>`,
+      stories: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5h7.5A2.5 2.5 0 0 1 16 7v13H6a2 2 0 0 1-2-2v-11a2.5 2.5 0 0 1 2-2.5Z"></path><path d="M16 7h2.5A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19H16"></path><path d="M8 8h5"></path><path d="M8 11h5"></path><path d="M8 14h4.5"></path><path d="M14.5 6.8c1 .2 2.1 1.2 2.3 2.2-.9.2-1.9.1-2.8-.3-.5-.2-.9-.6-1.2-1 .3-.6.9-1 1.7-.9Z"></path><path d="M13.3 7.9c.8.2 1.5.6 2 1.2"></path></svg>`,
+      bowl: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11h16"></path><path d="M5 11c0 4 3.1 7 7 7s7-3 7-7"></path><path d="M9 7c0-1.4 1-2.5 3-2.5S15 5.6 15 7"></path><path d="M10 14l-2 6"></path><path d="M14 14l2 6"></path></svg>`,
+      backpack: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7.5V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1.5"></path><path d="M6.5 7.5h11a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2V9.5a2 2 0 0 1 2-2Z"></path><path d="M9 12h6"></path><path d="M12 9v6"></path></svg>`,
+      book: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5h7.5A2.5 2.5 0 0 1 16 7v13H6a2 2 0 0 1-2-2v-11a2.5 2.5 0 0 1 2-2.5Z"></path><path d="M16 7h2.5A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19H16"></path><path d="M8 8h5"></path><path d="M8 11h5"></path><path d="M8 14h4.5"></path></svg>`
+    };
+
+    const state = {
+      config: null,
+      currentPage: null,
+      menuOpen: false
+    };
+
+    const $ = (sel) => document.querySelector(sel);
+
+    function safeText(value, fallback = '') {
+      return (value === undefined || value === null || value === '') ? fallback : String(value);
+    }
+
+    function iconSvg(name, fallback = 'menu') {
+      return ICONS[name] || ICONS[fallback];
+    }
+
+    function setTheme(config) {
+      const theme = config.theme || {};
+      document.documentElement.style.setProperty('--accent', theme.primary || config.accentColor || '#934134');
+      document.documentElement.style.setProperty('--accent-deep', theme.secondary || '#6f2f25');
+      document.documentElement.style.setProperty('--text', theme.text || '#fffaf4');
+      document.documentElement.style.setProperty('--bg', theme.background || '#241713');
+      if (theme.glass) document.documentElement.style.setProperty('--glass', theme.glass);
+      if (config.themeColor) document.querySelector('meta[name="theme-color"]').setAttribute('content', config.themeColor);
+      document.title = safeText(config.appName, 'Ashie’s Cottage');
+    }
+
+    function buildNav(config) {
+      const nav = $('#navMenu');
+      nav.innerHTML = '';
+
+      (config.navbar || []).forEach((item) => {
+        const button = document.createElement('button');
+        button.className = 'nav-btn';
+        button.type = 'button';
+        button.dataset.page = item.page;
+        button.setAttribute('aria-label', item.name || item.page || 'Page');
+        button.innerHTML = `
+          <span class="nav-icon">${iconSvg(item.icon || item.page || 'menu')}</span>
+          <span class="nav-label">${safeText(item.name, item.page)}</span>
+        `;
+        button.addEventListener('click', () => navigate(item.page));
+        nav.appendChild(button);
+      });
+    }
+
+    function buildHomeCards(config) {
+      const wrap = $('#homeCards');
+      wrap.innerHTML = '';
+      const buttons = Array.isArray(config.buttons) ? config.buttons : [];
+      buttons.forEach((btn, index) => {
+        const pageData = config.pages?.[btn.page] || {};
+        const a = document.createElement('a');
+        a.href = btn.url || `#${btn.page}`;
+        a.className = 'card';
+        a.setAttribute('aria-label', btn.text || btn.page || `Card ${index + 1}`);
+        a.dataset.page = btn.page;
+        const thumbIcon = btn.thumbnail || btn.icon || btn.page;
+        a.innerHTML = `
+          <div class="card-inner">
+            <div class="card-icon">${iconSvg(thumbIcon, btn.page)}</div>
+            <div class="card-title">${safeText(btn.text, safeText(pageData.title, 'PAGE'))}</div>
+            <div class="card-sub">${safeText(pageData.subtitle || pageData.description || '', '')}</div>
+          </div>
+        `;
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          navigate(btn.page);
+        });
+        wrap.appendChild(a);
+      });
+    }
+
+    function updateHome(config) {
+      const home = config.pages?.home || {};
+      $('#homeEyebrow').textContent = safeText(config.appSubtitle, 'Cozy Lifestyle Journal');
+      $('#homeTitle').textContent = safeText(config.appName, 'Ashie’s Cottage');
+      $('#homeSubtitle').textContent = safeText(home.description || config.appSubtitle, 'A little corner of joy and adventures');
+      $('#bottomNote').textContent = safeText(home.footer || 'Soft light • warm hearts • storybook calm');
+    }
+
+    function updatePageContent(config, pageId) {
+      const page = config.pages?.[pageId] || {};
+      $('#pageEyebrow').textContent = safeText((config.navbar || []).find(x => x.page === pageId)?.name || 'Page');
+      $('#pageTitle').textContent = safeText(page.title, pageId);
+      $('#pageSubtitle').textContent = safeText(page.subtitle, '');
+      $('#pageContent').textContent = safeText(page.content, 'This page is defined in config.json.');
+      $('#panelVisualText').textContent = safeText(page.title || config.appName, config.appName);
+    }
+
+    function setActiveNav(pageId) {
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.page === pageId);
+      });
+    }
+
+    function showPage(pageId, config) {
+      const homePage = $('#page-home');
+      const genericPage = $('#page-generic');
+
+      const isHome = pageId === 'home';
+      homePage.classList.toggle('active', isHome);
+      genericPage.classList.toggle('active', !isHome);
+
+      if (!isHome) updatePageContent(config, pageId);
+      setActiveNav(pageId);
+      state.currentPage = pageId;
+      history.replaceState({}, '', `#${pageId}`);
+    }
+
+    function navigate(pageId) {
+      const config = state.config;
+      if (!config) return;
+
+      const pages = config.pages || {};
+      const resolved = pages[pageId] ? pageId : (config.settings?.defaultPage || 'home');
+
+      if (resolved === 'home') {
+        showPage('home', config);
+      } else {
+        showPage(resolved, config);
+      }
+
+      state.menuOpen = false;
+      $('#navMenu').classList.remove('open');
+    }
+
+    function bindUi() {
+      $('#menuBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        state.menuOpen = !state.menuOpen;
+        $('#navMenu').classList.toggle('open', state.menuOpen);
+      });
+
+      $('#homeBtn').addEventListener('click', () => navigate('home'));
+
+      document.addEventListener('click', (e) => {
+        const nav = $('#navMenu');
+        const menuBtn = $('#menuBtn');
+        if (!nav.contains(e.target) && !menuBtn.contains(e.target)) {
+          state.menuOpen = false;
+          nav.classList.remove('open');
+        }
+      });
+
+      window.addEventListener('hashchange', () => {
+        const pageId = location.hash.replace('#', '') || state.config?.settings?.defaultPage || 'home';
+        navigate(pageId);
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          state.menuOpen = false;
+          $('#navMenu').classList.remove('open');
+        }
+      });
+    }
+
+    function applyConfig(config) {
+      state.config = config;
+      setTheme(config);
+      buildNav(config);
+      buildHomeCards(config);
+      updateHome(config);
+
+      const defaultPage = location.hash.replace('#', '') || config.settings?.defaultPage || 'home';
+      navigate(defaultPage);
+    }
+
+    async function loadConfig() {
+      try {
+        const res = await fetch('./config.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error(`Config fetch failed: ${res.status}`);
+        return await res.json();
+      } catch (err) {
+        console.warn('Using embedded config because config.json could not be loaded.', err);
+        return DEFAULT_CONFIG;
+      }
+    }
+
+    bindUi();
+    loadConfig().then(applyConfig);
+  </script>
+</body>
+</html>
