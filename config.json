@@ -1,0 +1,24 @@
+{
+  "appName": "Ashie's Cottage",
+  "appSubtitle": "A little corner of joy and adventures",
+
+  "navbar": [
+    { "id": "home", "name": "Home", "page": "home" },
+    { "id": "stories", "name": "Stories", "page": "stories" }
+  ],
+
+  "pages": {
+    "home": {
+      "title": "Welcome",
+      "subtitle": "Relax and explore"
+    },
+    "stories": {
+      "title": "Stories",
+      "subtitle": "Daily memories"
+    }
+  },
+
+  "settings": {
+    "defaultPage": "home"
+  }
+}
